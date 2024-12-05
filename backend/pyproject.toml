@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = "Similarities API"
+authors = []
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+uvicorn = "^0.32.1"
+python-multipart = "^0.0.19"
+sqlmodel = "^0.0.22"
+pgvector = "^0.3.6"
+python-decouple = "^3.8"
+psycopg = {extras = ["binary", "pool"], version = "^3.2.3"}
+scikit-image = "^0.24.0"
+opencv-python-headless = "^4.10.0.84"
+aiofiles = "^24.1.0"
+redis = "^5.2.0"
+rq = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

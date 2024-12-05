@@ -1,0 +1,51 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --log-config logging_config.json --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/code/
+      - ./storage:/storage/
+    depends_on:
+      - redis
+      - db
+    env_file: .env
+
+  queue-worker:
+    build:
+      context: ./backend
+    entrypoint: rq worker default -c queue_settings --with-scheduler
+    volumes:
+      - ./backend:/code/
+      - ./storage:/storage/
+    depends_on:
+      - redis
+      - db
+    env_file: .env
+
+  proxy:
+    image: nginx:1.27
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/:/etc/nginx/conf.d/
+      - ./storage:/storage/
+    depends_on:
+      - backend
+    env_file: .env
+
+  db:
+    hostname: db
+    image: ankane/pgvector
+    ports:
+      - "5555:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file: .env
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
