@@ -110,3 +110,7 @@ docker compose run backend pytest
 ## Possible optimizations
 - Calculate image's hash and check if the image was already uploaded before. It would reduce computations and storage in case same images are uploaded multiple times.
 - Maybe histogram calculations can be run using GPU
+
+
+
+Test images come from: https://github.com/tillmannohm/fruit-SALAD 
