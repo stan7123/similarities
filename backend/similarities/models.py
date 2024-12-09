@@ -8,6 +8,12 @@ from pgvector.sqlalchemy import Vector
 from sqlalchemy import Column
 from sqlmodel import Field, SQLModel, Index
 
+from similarities.histograms import (
+    COLOR_HISTOGRAM_VECTOR_SIZE,
+    HOG_HISTOGRAM_VECTOR_SIZE,
+    TEXTURE_HISTOGRAM_VECTOR_SIZE,
+)
+
 
 ACCEPTED_CONTENT_TYPES = {
     "image/png",
@@ -19,10 +25,9 @@ ACCEPTED_CONTENT_TYPES = {
 class Image(SQLModel, table=True):
     id: UUID = Field(default=uuid4, primary_key=True)
     path: str
-    color_hist: list[float] = Field(sa_column=Column(Vector(512)))
-    hog_hist: list[float] = Field(sa_column=Column(Vector(1764)))
-    texture_hist: list[float] = Field(sa_column=Column(Vector(48)))
-    intensity_hist: list[float] = Field(sa_column=Column(Vector(256)))
+    color_hist: list[float] = Field(sa_column=Column(Vector(COLOR_HISTOGRAM_VECTOR_SIZE)))
+    hog_hist: list[float] = Field(sa_column=Column(Vector(HOG_HISTOGRAM_VECTOR_SIZE)))
+    texture_hist: list[float] = Field(sa_column=Column(Vector(TEXTURE_HISTOGRAM_VECTOR_SIZE)))
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     processed_at: datetime | None
 
@@ -30,7 +35,6 @@ class Image(SQLModel, table=True):
         Index('ix_image_color', 'color_hist', postgresql_using='ivfflat'),
         Index('ix_image_hog', 'hog_hist', postgresql_using='ivfflat'),
         Index('ix_image_texture', 'texture_hist', postgresql_using='ivfflat'),
-        Index('ix_image_intensity', 'intensity_hist', postgresql_using='ivfflat'),
     )
 
 

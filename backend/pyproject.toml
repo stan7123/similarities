@@ -19,6 +19,8 @@ opencv-python-headless = "^4.10.0.84"
 aiofiles = "^24.1.0"
 redis = "^5.2.0"
 rq = "^2.0.0"
+httpx = "^0.28.1"
+pytest = "^8.3.4"
 
 [build-system]
 requires = ["poetry-core"]

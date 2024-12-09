@@ -12,3 +12,8 @@ def get_session():
     with Session(engine) as session:
         yield session
 
+
+session_obj = Session(engine)
+
+def get_session_instance():
+    return session_obj
