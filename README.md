@@ -98,7 +98,7 @@ docker compose run backend pytest
 
 
 ## Design decisions
-- Calculating different histogram types from images and storing results as vectors. This is an efficient way for storing metadata and a way to reduce search complexity.
+- The core of the app (finding similarities) is based on calculating different histogram types from images and storing results as vectors. This is an efficient way for storing metadata and a way to reduce search complexity.
 - Using postgres with pgvector extension because Mysql has no indexes on vector columns.
 - Storing uploaded files in directories next to the code for simplicity. Usually some kind of storage service like S3 should be used.
 - Using rq as simple and lightweight worker for background tasks
