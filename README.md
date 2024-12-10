@@ -44,7 +44,7 @@ Note: Image size is currently limited to 50MB. It can be adjusted on the proxy.
 
 ### Download image
 
-To download the image call: http://localhost/download/[image_id] . There will be redirection to the image direct URL.
+To download the image call: http://localhost/download/[image_id] . There will be redirection to image's direct URL.
 
 An exemplary **curl** call: `curl -v http://localhost/download/99f557a0-3f00-4715-bb58-d74013ef541f`
 
@@ -77,13 +77,18 @@ API docs can be found at: `http://localhost/docs`
 ## Running tests
 
 First you need to prepare test database:
-```
-docker compose exec db bash
-psql -U db
-CREATE DATABASE test_db;
-\c test_db
-CREATE EXTENSION vector;
-```
+
+`docker compose exec db bash`
+
+`psql -U db`
+
+`CREATE DATABASE test_db;`
+
+`\c test_db`
+
+`CREATE EXTENSION vector;`
+
+`exit` + `exit`
 
 Then you can run tests
 
@@ -93,14 +98,14 @@ docker compose run backend pytest
 
 
 ## Design decisions
-- Using different histogram types for images and storing them as vectors. This is an efficient way for storing and search complexity
+- Calculating different histogram types from images and storing results as vectors. This is an efficient way for storing metadata and a way to reduce search complexity.
 - Using postgres with pgvector extension because Mysql has no indexes on vector columns.
 - Storing uploaded files in directories next to the code for simplicity. Usually some kind of storage service like S3 should be used.
 - Using rq as simple and lightweight worker for background tasks
-- All the components can easily scale (API, background workers, storage). This design should scale easily to millions of images. First bottleneck will be the database and when going further some other DB which can scale horizontally and has vector search support can be used e.g. MongoDB, Cassandra and potentially other specialized in vectors.   
+- All the components can easily scale (API, background workers, storage). This design should scale easily to millions of images. First bottleneck will be probably the database and when going further with the scale, some other DB which can scale horizontally and has vector search support can be used e.g. MongoDB, Cassandra and potentially other specialized in vectors.   
 - Image extensions(formats) are limited to: jpg, jpeg, png. The app can probably process many other formats - can be researched an extended.
-- There was rather little effort put into domain topics like histogram's parameters tuning. 
-- Background task for histogram calculation is retried 10 times with exponential backoff in case of error. After that, submitted images can be ignored or a periodical task (not implemented) might try to schedule them again for processing.  
+- There was rather little effort put into domain topics like histogram's parameters tuning. It can definitely be improved. 
+- Background task for histogram calculation is retried 10 times with exponential backoff in case of error. After that, submitted images can be ignored or a periodical task (not implemented) might try to schedule them again for processing.
 
 ## Things to improve for production setup
 - Components might require replacement when run in the cloud for scaling and reliability: S3/Cloud storage for storing images, SQS or similar as queue instead of Redis etc.
