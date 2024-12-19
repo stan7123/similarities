@@ -32,6 +32,9 @@ Open http://localhost/healthcheck to confirm the service is running (should show
 
 ## How to use
 
+### Frontend
+Simple frontend can be accessed at http://localhost/index.html
+
 ### Upload image
 
 Images can be submitted by sending request with `multipart/form-data` content type and file in `image` field to `http://localhost/upload`.
