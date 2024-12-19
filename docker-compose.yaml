@@ -16,6 +16,9 @@ services:
   queue-worker:
     build:
       context: ./backend
+    deploy:
+      mode: replicated
+      replicas: 1
     entrypoint: rq worker default -c queue_settings --with-scheduler
     volumes:
       - ./backend:/code/
@@ -32,6 +35,7 @@ services:
     volumes:
       - ./proxy/:/etc/nginx/conf.d/
       - ./storage:/storage/
+      - ./fe:/fe/
     depends_on:
       - backend
     env_file: .env
