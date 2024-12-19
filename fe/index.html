@@ -99,7 +99,10 @@
         const imageId = data.id
         uploadedImage.src = `/download/${imageId}`;
         uploadedImage.style.display = 'block';
-        imageId.value = imageId;
+
+        const imageIdInput = document.getElementById('image-id');
+        imageIdInput.value = imageId;
+        similarImagesContainer.replaceChildren();
     });
 
     searchButton.addEventListener('click', async () => {
