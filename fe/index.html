@@ -90,7 +90,7 @@
         const response = await fetch('/upload', {method: 'POST', body: formData});
 
         if(response.status !== 201){
-            alert(`Error when sending image: ${response.body}`)
+            alert(`Error when sending image: ${await response.text()}`)
             return;
         }
 
@@ -126,7 +126,7 @@
 
         const response = await fetch(`/similar/${imageId}/${searchType}?${params.toString()}`);
         if (response.status !== 200) {
-            alert(`Error during request: ${response.body}`)
+            alert(`Error during request: ${await response.text()}`)
             return;
         }
 
